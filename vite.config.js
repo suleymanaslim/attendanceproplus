@@ -5,6 +5,7 @@ export default defineConfig({
     plugins: [
         tailwindcss(),
     ],
+    base: '/',
     server: {
         port: 3000,
         open: true
