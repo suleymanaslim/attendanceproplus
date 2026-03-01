@@ -91,15 +91,24 @@ export async function renderSettings(container) {
         </button>
       </div>
 
-      <!-- App Info — logo + name side by side (#8) -->
-      <div class="animate-slide-up stagger-5" style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 24px 0; opacity: 0.4;">
-        <img src="/icons/logo.png" alt="Logo" style="width: 32px; height: 32px; border-radius: 8px;" />
+      <!-- Storage Info -->
+      <div class="card animate-slide-up stagger-5" style="margin-bottom: 10px;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+          ${icon('inbox', 16)}
+          <h3 style="font-size: 14px; font-weight: 700; margin: 0;">Depolama</h3>
+        </div>
+        <div id="storage-info" style="font-size: 12px; color: var(--muted);">Hesaplanıyor...</div>
+      </div>
+
+      <!-- App Info -->
+      <div class="animate-slide-up stagger-6" style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 20px 0; opacity: 0.4;">
+        <img src="/icons/logo.png" alt="Logo" style="width: 28px; height: 28px; border-radius: 6px;" />
         <div>
-          <p style="font-size: 12px; font-weight: 700; margin: 0;">
+          <p style="font-size: 11px; font-weight: 700; margin: 0;">
             <span style="color: var(--color-brand);">Attendance</span><span style="color: var(--color-accent);">Pro+</span>
-            <span style="font-weight: 400; opacity: 0.6;">v1.0</span>
+            <span style="font-weight: 400; opacity: 0.6;">v2.0</span>
           </p>
-          <p style="font-size: 10px; color: var(--muted); margin: 2px 0 0;">Süleyman Aslım</p>
+          <p style="font-size: 9px; color: var(--muted); margin: 1px 0 0;">Süleyman Aslım</p>
         </div>
       </div>
     </div>
@@ -182,4 +191,29 @@ export async function renderSettings(container) {
       navigate('login');
     });
   });
+
+  // Storage estimate
+  const storageEl = container.querySelector('#storage-info');
+  if (navigator.storage && navigator.storage.estimate) {
+    try {
+      const est = await navigator.storage.estimate();
+      const usedMB = (est.usage / (1024 * 1024)).toFixed(2);
+      const quotaMB = (est.quota / (1024 * 1024)).toFixed(0);
+      const pct = ((est.usage / est.quota) * 100).toFixed(1);
+      storageEl.innerHTML = `
+        <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+          <span>${usedMB} MB kullanılıyor</span>
+          <span style="font-weight: 600;">${pct}%</span>
+        </div>
+        <div style="height: 4px; border-radius: 2px; background: var(--border); overflow: hidden;">
+          <div style="height: 100%; width: ${pct}%; background: var(--color-brand); border-radius: 2px;"></div>
+        </div>
+        <div style="font-size: 10px; color: var(--muted); margin-top: 4px;">Toplam: ~${quotaMB} MB</div>
+      `;
+    } catch (e) {
+      storageEl.textContent = 'Hesaplanamadı';
+    }
+  } else {
+    storageEl.textContent = 'Bu tarayıcıda desteklenmiyor';
+  }
 }

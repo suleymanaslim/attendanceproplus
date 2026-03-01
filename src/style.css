@@ -4,14 +4,14 @@
 /* Instead of .dark .card / .light .card → use CSS vars that change with class */
 @theme {
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
-  --color-brand: #1a8cd8;
-  --color-brand-light: #4da8e8;
-  --color-brand-dark: #0a5c99;
-  --color-brand-50: #eef7fd;
-  --color-brand-100: #d4ecfa;
-  --color-brand-200: #a9d9f5;
-  --color-accent: #f5c518;
-  --color-accent-dark: #d4a910;
+  --color-brand: #3b82f6;
+  --color-brand-light: #60a5fa;
+  --color-brand-dark: #2563eb;
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-200: #bfdbfe;
+  --color-accent: #38bdf8;
+  --color-accent-dark: #0284c7;
   --color-success: #22c55e;
   --color-success-light: #4ade80;
   --color-warning: #f59e0b;
@@ -23,27 +23,27 @@
 /* Dynamic theme variables — these CHANGE based on html class */
 :root,
 :root.dark {
-  --bg: #0b1120;
-  --surface: #111827;
-  --card-bg: #1e293b;
-  --card-hover: #243247;
-  --border: #2d3a4f;
-  --text: #f1f5f9;
-  --muted: #8b9ab5;
-  --nav-bg: rgba(11, 17, 32, 0.96);
-  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --bg: #09090b;
+  --surface: #18181b;
+  --card-bg: #27272a;
+  --card-hover: #3f3f46;
+  --border: #3f3f46;
+  --text: #fafafa;
+  --muted: #a1a1aa;
+  --nav-bg: rgba(9, 9, 11, 0.92);
+  --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 :root.light {
-  --bg: #f0f4fa;
-  --surface: #f7f9fd;
+  --bg: #fafafa;
+  --surface: #f4f4f5;
   --card-bg: #ffffff;
-  --card-hover: #eef3fb;
-  --border: #d1dae8;
-  --text: #0b1120;
-  --muted: #5a6a80;
-  --nav-bg: rgba(247, 249, 253, 0.96);
-  --card-shadow: 0 1px 4px rgba(11, 17, 32, 0.06), 0 0 1px rgba(11, 17, 32, 0.04);
+  --card-hover: #f0f0f2;
+  --border: #e4e4e7;
+  --text: #09090b;
+  --muted: #71717a;
+  --nav-bg: rgba(250, 250, 250, 0.92);
+  --card-shadow: 0 1px 4px rgba(9, 9, 11, 0.06), 0 0 1px rgba(9, 9, 11, 0.04);
 }
 
 /* ===== BASE ===== */
@@ -67,22 +67,6 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* ===== SCREEN TRANSITIONS ===== */
-#screen-container {
-  animation: screenEnter 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-
-@keyframes screenEnter {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
 /* ===== CARDS ===== */
 .card {
@@ -162,12 +146,12 @@ body {
 
 .btn-primary {
   background: linear-gradient(135deg, var(--color-brand), var(--color-brand-dark));
-  box-shadow: 0 2px 8px rgba(26, 140, 216, 0.25);
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
 }
 
 .btn-primary:hover {
   background: linear-gradient(135deg, var(--color-brand-light), var(--color-brand));
-  box-shadow: 0 4px 12px rgba(26, 140, 216, 0.35);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
 }
 
 .btn-danger {
@@ -188,7 +172,7 @@ body {
 
 .btn-ghost:hover {
   color: var(--color-brand);
-  background: rgba(26, 140, 216, 0.08);
+  background: rgba(59, 130, 246, 0.08);
 }
 
 .btn-outline {
@@ -230,7 +214,7 @@ body {
 
 .input:focus {
   border-color: var(--color-brand);
-  box-shadow: 0 0 0 3px rgba(26, 140, 216, 0.15);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 .input::placeholder {
@@ -281,7 +265,7 @@ select.input {
 }
 
 .badge-brand {
-  background: rgba(26, 140, 216, 0.12);
+  background: rgba(59, 130, 246, 0.12);
   color: var(--color-brand);
 }
 
@@ -345,7 +329,7 @@ select.input {
 .nav-item.active {
   color: var(--color-brand);
   font-weight: 600;
-  background: rgba(26, 140, 216, 0.1);
+  background: rgba(59, 130, 246, 0.1);
 }
 
 .nav-item.active::after {
@@ -586,8 +570,9 @@ select.input {
 }
 
 .pin-login-premium {
-  background: linear-gradient(135deg, #0a5c99 0%, #1a8cd8 50%, #f5c518 100%);
-  background-attachment: fixed;
+  background: linear-gradient(-45deg, #0f172a, #1e293b, #1e1b4b, #0f172a);
+  background-size: 400% 400%;
+  animation: gradientShift 12s ease infinite;
   color: white;
   width: 100vw;
   height: 100dvh;
@@ -596,6 +581,20 @@ select.input {
   left: 0;
   z-index: 2000;
   overflow-y: auto;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 
@@ -626,8 +625,8 @@ select.input {
 }
 
 .schedule-day-header.today {
-  background: rgba(26, 140, 216, 0.10);
-  border-color: rgba(26, 140, 216, 0.25);
+  background: rgba(59, 130, 246, 0.10);
+  border-color: rgba(59, 130, 246, 0.25);
 }
 
 .schedule-day-lessons {
@@ -772,4 +771,183 @@ select.input {
 
 .date-quick-btn:active {
   transform: scale(0.96);
+}
+
+/* ===== SCREEN TRANSITIONS ===== */
+#screen-container {
+  animation: screenEnter 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes screenEnter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== BOTTOM SHEET ===== */
+.bottom-sheet-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0px);
+  transition: background 0.3s ease, backdrop-filter 0.3s ease;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.bottom-sheet-overlay.active {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.bottom-sheet {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 20px 20px 0 0;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  color: var(--text);
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+}
+
+.bottom-sheet.active {
+  transform: translateY(0);
+}
+
+.bottom-sheet-handle-area {
+  padding: 12px 0 8px;
+  cursor: grab;
+  touch-action: none;
+  display: flex;
+  justify-content: center;
+}
+
+.bottom-sheet-handle {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+}
+
+.bottom-sheet-body {
+  padding: 0 20px 16px;
+}
+
+/* ===== SPRING ANIMATIONS ===== */
+@keyframes springIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(10px);
+  }
+
+  60% {
+    transform: scale(1.02) translateY(-2px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes springPop {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-spring-in {
+  animation: springIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.animate-spring-pop {
+  animation: springPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ===== SMOOTH ACCORDION ===== */
+.accordion-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.accordion-panel.open {
+  grid-template-rows: 1fr;
+}
+
+.accordion-panel>.accordion-inner {
+  overflow: hidden;
+}
+
+/* ===== PRESS FEEDBACK ===== */
+.press-feedback {
+  transition: transform 0.15s ease;
+  cursor: pointer;
+}
+
+.press-feedback:active {
+  transform: scale(0.96);
+}
+
+/* ===== CIRCLE REVEAL THEME TRANSITION ===== */
+.theme-transition-circle {
+  position: fixed;
+  z-index: 9999;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: circleExpand 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes circleExpand {
+  from {
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+
+  to {
+    width: 300vmax;
+    height: 300vmax;
+    opacity: 1;
+  }
+}
+
+/* ===== WHEEL PULSE ===== */
+.wheel-pulse-ring {
+  animation: wheelPulse 3s ease-in-out infinite;
+}
+
+@keyframes wheelPulse {
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: scale(1.03);
+  }
 }

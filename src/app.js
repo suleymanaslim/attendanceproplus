@@ -6,6 +6,7 @@ import { renderStats } from './screens/Stats.js';
 import { renderWeeklySchedule } from './screens/WeeklySchedule.js';
 import { renderSettings } from './screens/Settings.js';
 import { icons } from './icons.js';
+import { addPressFeedback } from './animations.js';
 
 const app = document.getElementById('app');
 
@@ -47,6 +48,9 @@ function render(screen) {
     app.appendChild(screenContainer);
 
     renderFn(screenContainer);
+
+    // Subtle press feedback on interactive elements
+    addPressFeedback(screenContainer);
 
     // Bottom nav for main screens
     if (NAV_SCREENS.includes(screen)) {

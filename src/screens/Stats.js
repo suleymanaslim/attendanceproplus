@@ -48,19 +48,52 @@ export async function renderStats(container) {
         <h1 style="font-size: 22px; font-weight: 800; margin: 0;">İstatistikler</h1>
       </div>
 
-      <!-- Summary — redesigned, no borders -->
-      <div style="display: flex; gap: 8px; margin-bottom: 24px;">
-        <div class="animate-slide-up stagger-1" style="flex: 1; border-radius: 14px; padding: 16px; text-align: center; background: linear-gradient(135deg, rgba(26, 140, 216, 0.12), rgba(26, 140, 216, 0.04));">
-          <div style="font-size: 26px; font-weight: 800; color: var(--color-brand);">${totalAbsentAll}</div>
-          <div style="font-size: 10px; color: var(--color-brand); font-weight: 600; margin-top: 4px;">Toplam Saat</div>
+      <!-- Summary — Donut Chart -->
+      <div class="animate-slide-up stagger-1" style="display: flex; align-items: center; gap: 20px; margin-bottom: 24px; padding: 16px; border-radius: 16px; background: var(--surface);">
+        <!-- Donut -->
+        <div style="position: relative; width: 90px; height: 90px; flex-shrink: 0;">
+          ${(() => {
+      const total = courseStats.length || 1;
+      const r = 38, c = 2 * Math.PI * r;
+      const safeP = safeCourses.length / total;
+      const warnP = warningCourses.length / total;
+      const critP = criticalCourses.length / total;
+      const gap = 0.02;
+      const s1 = 0, e1 = safeP - gap;
+      const s2 = safeP + gap, e2 = safeP + warnP - gap;
+      const s3 = safeP + warnP + gap, e3 = 1 - gap;
+      return `
+              <svg viewBox="0 0 96 96" width="90" height="90" style="transform: rotate(-90deg);">
+                <circle cx="48" cy="48" r="${r}" fill="none" stroke="var(--border)" stroke-width="8" opacity="0.3"/>
+                ${safeCourses.length > 0 ? `<circle cx="48" cy="48" r="${r}" fill="none" stroke="var(--color-success)" stroke-width="8" stroke-dasharray="${e1 * c} ${(1 - e1) * c}" stroke-dashoffset="0" stroke-linecap="round"/>` : ''}
+                ${warningCourses.length > 0 ? `<circle cx="48" cy="48" r="${r}" fill="none" stroke="var(--color-warning)" stroke-width="8" stroke-dasharray="${warnP * c} ${(1 - warnP) * c}" stroke-dashoffset="${-s2 * c}" stroke-linecap="round"/>` : ''}
+                ${criticalCourses.length > 0 ? `<circle cx="48" cy="48" r="${r}" fill="none" stroke="var(--color-danger)" stroke-width="8" stroke-dasharray="${critP * c} ${(1 - critP) * c}" stroke-dashoffset="${-s3 * c}" stroke-linecap="round"/>` : ''}
+              </svg>
+            `;
+    })()}
+          <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div style="font-size: 20px; font-weight: 800; color: var(--text); line-height: 1;">${totalAbsentAll}</div>
+            <div style="font-size: 9px; color: var(--muted); font-weight: 600;">saat</div>
+          </div>
         </div>
-        <div class="animate-slide-up stagger-2" style="flex: 1; border-radius: 14px; padding: 16px; text-align: center; background: linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(245, 158, 11, 0.04));">
-          <div style="font-size: 26px; font-weight: 800; color: var(--color-warning);">${warningCourses.length}</div>
-          <div style="font-size: 10px; color: var(--color-warning); font-weight: 600; margin-top: 4px;">Dikkat</div>
-        </div>
-        <div class="animate-slide-up stagger-3" style="flex: 1; border-radius: 14px; padding: 16px; text-align: center; background: linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(239, 68, 68, 0.04));">
-          <div style="font-size: 26px; font-weight: 800; color: var(--color-danger);">${criticalCourses.length}</div>
-          <div style="font-size: 10px; color: var(--color-danger); font-weight: 600; margin-top: 4px;">Kritik</div>
+
+        <!-- Stats -->
+        <div style="display: flex; flex-direction: column; gap: 8px; flex: 1;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--color-success);"></span>
+            <span style="font-size: 13px; font-weight: 600; color: var(--text);">${safeCourses.length}</span>
+            <span style="font-size: 12px; color: var(--muted);">güvenli</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--color-warning);"></span>
+            <span style="font-size: 13px; font-weight: 600; color: var(--text);">${warningCourses.length}</span>
+            <span style="font-size: 12px; color: var(--muted);">dikkat</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--color-danger);"></span>
+            <span style="font-size: 13px; font-weight: 600; color: var(--text);">${criticalCourses.length}</span>
+            <span style="font-size: 12px; color: var(--muted);">kritik</span>
+          </div>
         </div>
       </div>
 
@@ -178,8 +211,16 @@ function renderCourseCard(course, index, status) {
         <!-- Header -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
           <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">
-            <div style="width: 38px; height: 38px; border-radius: 10px; background: ${course.color}15; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-              <span style="font-size: 11px; font-weight: 800; color: ${course.color};">${course.code.slice(0, 3)}</span>
+            <div style="position: relative; width: 38px; height: 38px; flex-shrink: 0;">
+              <svg viewBox="0 0 40 40" width="38" height="38" style="transform: rotate(-90deg);">
+                <circle cx="20" cy="20" r="16" fill="none" stroke="var(--border)" stroke-width="4" opacity="0.3"/>
+                <circle cx="20" cy="20" r="16" fill="none" stroke="${cfg.accent}" stroke-width="4"
+                  stroke-dasharray="${(course.percentage / 100) * 2 * Math.PI * 16} ${(1 - course.percentage / 100) * 2 * Math.PI * 16}"
+                  stroke-linecap="round"/>
+              </svg>
+              <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 800; color: ${cfg.accent};">
+                ${Math.round(course.percentage)}
+              </div>
             </div>
             <div style="min-width: 0; flex: 1;">
               <div style="font-size: 14px; font-weight: 700; line-height: 1.3;">${course.name}</div>

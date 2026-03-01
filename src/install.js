@@ -4,34 +4,34 @@ let deferredPrompt = null;
 
 // Listen for beforeinstallprompt (Android/Desktop)
 window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
+  e.preventDefault();
+  deferredPrompt = e;
 });
 
 export function showInstallPrompt() {
-    // Don't show if already installed or dismissed recently
-    if (window.matchMedia('(display-mode: standalone)').matches) return;
-    if (window.navigator.standalone === true) return;
+  // Don't show if already installed or dismissed recently
+  if (window.matchMedia('(display-mode: standalone)').matches) return;
+  if (window.navigator.standalone === true) return;
 
-    const dismissed = localStorage.getItem('installDismissed');
-    const openCount = Number(localStorage.getItem('openCount') || 0) + 1;
-    localStorage.setItem('openCount', String(openCount));
+  const dismissed = localStorage.getItem('installDismissed');
+  const openCount = Number(localStorage.getItem('openCount') || 0) + 1;
+  localStorage.setItem('openCount', String(openCount));
 
-    if (dismissed && openCount % 3 !== 1) return;
+  if (dismissed && openCount % 3 !== 1) return;
 
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 
-    if (deferredPrompt) {
-        showNativePrompt();
-    } else if (isIOS) {
-        showIOSPrompt();
-    }
+  if (deferredPrompt) {
+    showNativePrompt();
+  } else if (isIOS) {
+    showIOSPrompt();
+  }
 }
 
 function showNativePrompt() {
-    const el = document.createElement('div');
-    el.className = 'install-prompt';
-    el.innerHTML = `
+  const el = document.createElement('div');
+  el.className = 'install-prompt';
+  el.innerHTML = `
     <div class="card" style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; margin: 0 auto; box-sizing: border-box;">
       <img src="/icons/logo.png" alt="" style="width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;" />
       <div style="flex: 1; min-width: 0;">
@@ -43,27 +43,27 @@ function showNativePrompt() {
     </div>
   `;
 
-    document.body.appendChild(el);
+  document.body.appendChild(el);
 
-    el.querySelector('#install-yes').addEventListener('click', async () => {
-        el.remove();
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            deferredPrompt = null;
-        }
-    });
+  el.querySelector('#install-yes').addEventListener('click', async () => {
+    el.remove();
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+    }
+  });
 
-    el.querySelector('#install-no').addEventListener('click', () => {
-        el.remove();
-        localStorage.setItem('installDismissed', 'true');
-    });
+  el.querySelector('#install-no').addEventListener('click', () => {
+    el.remove();
+    localStorage.setItem('installDismissed', 'true');
+  });
 }
 
 function showIOSPrompt() {
-    const overlay = document.createElement('div');
-    overlay.className = 'modal-overlay';
-    overlay.innerHTML = `
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.innerHTML = `
     <div class="modal-content" style="text-align: center;">
       <div class="modal-handle"></div>
       <img src="/icons/logo.png" alt="" style="width: 48px; height: 48px; border-radius: 12px; margin: 0 auto 14px; display: block;" />
@@ -72,7 +72,7 @@ function showIOSPrompt() {
 
       <div style="display: flex; flex-direction: column; gap: 14px; text-align: left;">
         <div style="display: flex; align-items: center; gap: 12px;">
-          <div style="width: 34px; height: 34px; border-radius: 10px; background: rgba(26, 140, 216, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--color-brand);">
+          <div style="width: 34px; height: 34px; border-radius: 10px; background: rgba(59, 130, 246, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--color-brand);">
             ${icon('share', 16)}
           </div>
           <div>
@@ -82,7 +82,7 @@ function showIOSPrompt() {
         </div>
 
         <div style="display: flex; align-items: center; gap: 12px;">
-          <div style="width: 34px; height: 34px; border-radius: 10px; background: rgba(26, 140, 216, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--color-brand);">
+          <div style="width: 34px; height: 34px; border-radius: 10px; background: rgba(59, 130, 246, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--color-brand);">
             ${icon('plus', 16)}
           </div>
           <div>
@@ -92,7 +92,7 @@ function showIOSPrompt() {
         </div>
 
         <div style="display: flex; align-items: center; gap: 12px;">
-          <div style="width: 34px; height: 34px; border-radius: 10px; background: rgba(26, 140, 216, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--color-brand);">
+          <div style="width: 34px; height: 34px; border-radius: 10px; background: rgba(59, 130, 246, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--color-brand);">
             ${icon('check', 16)}
           </div>
           <div>
@@ -106,17 +106,17 @@ function showIOSPrompt() {
     </div>
   `;
 
-    document.body.appendChild(overlay);
+  document.body.appendChild(overlay);
 
-    overlay.querySelector('#ios-dismiss').addEventListener('click', () => {
-        overlay.remove();
-        localStorage.setItem('installDismissed', 'true');
-    });
+  overlay.querySelector('#ios-dismiss').addEventListener('click', () => {
+    overlay.remove();
+    localStorage.setItem('installDismissed', 'true');
+  });
 
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-            overlay.remove();
-            localStorage.setItem('installDismissed', 'true');
-        }
-    });
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      overlay.remove();
+      localStorage.setItem('installDismissed', 'true');
+    }
+  });
 }
